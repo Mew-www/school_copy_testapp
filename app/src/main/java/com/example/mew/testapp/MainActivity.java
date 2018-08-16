@@ -227,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
 */
 
     public void ScanResults(View view){
+        Integer THRESHOLD = 5;
+
         ListView lv;
 
         InputStream inputStream = getResources().openRawResource(R.raw.floor1);
@@ -267,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < lookup.size(); i++) {
                 String location = lookup.get(i)[1];
                 String bssid = lookup.get(i)[2];
-                String rssi = lookup.get(i)[3];
+                Integer rssi = Integer.parseInt(lookup.get(i)[3]);
                 // IF NEW LOCATION
                 if (i == 0 || !location.equals(lookup.get(i-1)[1])) {
                     // BUT IF NOT THE FIRST PASS
@@ -291,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                 // CHECK IF LINE MATCHES ANY OF THE LOOKUP BSSIDs
                 Boolean match = false;
                 for (int j = 0; j < ap_list.size(); j++) {
-                    if (ap_list.get(j).BSSID.trim().equals(bssid.trim())) {
+                    if (ap_list.get(j).BSSID.trim().equals(bssid.trim()) && (rssi >= ap_list.get(j).level-5 && rssi <= ap_list.get(j).level+5)) {
                         match = true;
                         matches.add(bssid.trim());
                     }
